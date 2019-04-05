@@ -1,6 +1,6 @@
 {
   "name": "ember-decorators-polyfill",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Polyfills Ember's built-in decorators",
   "keywords": [
     "ember-addon"
