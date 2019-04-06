@@ -135,9 +135,7 @@ import {
 
   class DecoratorDescriptor extends ComputedProperty {
     setup(obj, key, meta) {
-      if (!this._computedDesc) {
-        this._computedDesc = buildComputedDesc(this, obj, key, {});
-      }
+      this._computedDesc = buildComputedDesc(this, obj, key, {});
 
       if (gte('3.6.0')) {
         this._computedDesc.setup(obj, key, meta);
@@ -175,11 +173,11 @@ import {
     }
 
     get() {
-      return this._innerComputed.get.apply(this, arguments);
+      return this._computedDesc.get.apply(this, arguments);
     }
 
     set() {
-      return this._innerComputed.get.apply(this, arguments);
+      return this._computedDesc.get.apply(this, arguments);
     }
 
     readOnly() {
@@ -200,6 +198,15 @@ import {
     meta(...args) {
       this._addModifier(['meta', args]);
       return this;
+    }
+
+    // For ember-macro-helpers. This computes the descriptor early, which is not ideal.
+    get _getter() {
+      if (!this._computedDesc) {
+        this._computedDesc = buildComputedDesc(this, undefined, undefined, {});
+      }
+
+      return this._computedDesc._getter;
     }
   }
 
