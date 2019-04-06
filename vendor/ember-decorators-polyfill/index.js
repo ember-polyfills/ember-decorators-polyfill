@@ -203,6 +203,8 @@ import {
     }
   }
 
+  DecoratorDescriptor.prototype.isDescriptor = true;
+
   function computedDecorator(fn, params) {
     let dec = function(prototype, key, desc) {
       assert(
