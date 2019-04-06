@@ -204,6 +204,7 @@ import {
   }
 
   DecoratorDescriptor.prototype.isDescriptor = true;
+  DecoratorDescriptor.prototype.__IS_POLYFILLED_COMPUTED = true;
 
   function computedDecorator(fn, params) {
     let dec = function(prototype, key, desc) {
