@@ -189,6 +189,41 @@ module('@computed', function() {
     );
   });
 
+  test('it works with classic classes with setter-only desc', function(assert) {
+    assert.expect(4);
+
+    let expectedName = 'rob jackson';
+
+    const Foo = EmberObject.extend({
+      first: 'rob',
+      last: 'jackson',
+
+      fullName: computed('first', 'last', {
+        set(key, name) {
+          assert.equal(name, expectedName, 'setter: name matches');
+
+          const [first, last] = name.split(' ');
+          setProperties(this, { first, last });
+
+          return name;
+        },
+      }),
+    });
+
+    let obj = Foo.create();
+
+    expectedName = 'yehuda katz';
+    set(obj, 'fullName', 'yehuda katz');
+
+    assert.equal(obj.first, 'yehuda', 'first name was updated');
+    assert.equal(obj.last, 'katz', 'last name was updated');
+    assert.strictEqual(
+      get(obj, 'fullName'),
+      expectedName,
+      'return value of setter is new value of property'
+    );
+  });
+
   test('dependent key changes invalidate the computed property', function(assert) {
     class Foo {
       first = 'rob';
