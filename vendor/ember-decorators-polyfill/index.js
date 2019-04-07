@@ -275,7 +275,7 @@ import {
       let desc = Object.getOwnPropertyDescriptor(decorator, 'name');
       // Pre ES2015 non standard implementation, "Function.name" is non configurable field
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
-      if (desc.configurable) {
+      if (desc && desc.configurable) {
         Object.defineProperty(decorator, 'name', {
           value: fnName,
         });
