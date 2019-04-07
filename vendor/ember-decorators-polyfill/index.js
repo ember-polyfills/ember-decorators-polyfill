@@ -321,7 +321,7 @@ import {
         `Attempted to apply a computed property that already has a getter/setter to a ${key}, but it is a method or an accessor. If you passed @computed a function or getter/setter (e.g. \`@computed({ get() { ... } })\`), then it must be applied to a field`,
         !(
           desc &&
-          (typeof get === 'function' || typeof 'set' === 'function') &&
+          (typeof get === 'function' || typeof set === 'function') &&
           (typeof desc.get === 'function' || typeof desc.get === 'function')
         )
       );
@@ -336,7 +336,7 @@ import {
 
       assert(
         `Attempted to use @computed on ${key}, but it did not have a getter or a setter. You must either pass a get a function or getter/setter to @computed directly (e.g. \`@computed({ get() { ... } })\`) or apply @computed directly to a getter/setter`,
-        typeof get === 'function' || typeof 'set' === 'function'
+        typeof get === 'function' || typeof set === 'function'
       );
 
       if (desc !== undefined) {
