@@ -3,6 +3,7 @@ import DS from 'ember-data';
 import { getContext } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { get as emberGet } from '@ember/object';
+import { run } from '@ember/runloop';
 import { gte } from 'ember-compatibility-helpers';
 
 function get(obj, key) {
@@ -23,8 +24,8 @@ function register(registeredName, object) {
 
 function stubAdapter() {
   let store = getService('store');
-  store.createRecord('post', { name: name1 });
-  store.createRecord('post', { name: name2 });
+  run(() => store.createRecord('post', { name: name1 }));
+  run(() => store.createRecord('post', { name: name2 }));
 }
 
 let name1 = 'Rails is omakase';
