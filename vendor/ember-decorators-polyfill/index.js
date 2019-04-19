@@ -143,12 +143,13 @@ import {
         this._computedDesc.setup(obj, key, meta);
       } else if (gte('3.1.0')) {
         let meta = Ember.meta(obj);
+        let desc = this._computedDesc;
 
         Object.defineProperty(obj, key, {
           configurable: true,
           enumerable: true,
           get() {
-            return this._computedDesc.get(key);
+            return desc.get(this, key);
           },
         });
 
