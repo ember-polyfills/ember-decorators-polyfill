@@ -9,6 +9,7 @@ import {
 
 (function() {
   const {
+    wrap,
     assign,
     computed: emberComputed,
     ComputedProperty,
@@ -39,6 +40,20 @@ import {
       );
     } else {
       throw new Error('Cannot call `isDescriptorTrap` in production');
+    }
+  }
+
+  function getInheritedComputedDescriptor(obj, keyName) {
+    let meta = Ember.meta(obj);
+    let parentSource = meta && meta.parent ? meta.parent.source : undefined;
+    while (parentSource) {
+      let computedDesc = computedDescriptorFor(parentSource, keyName);
+      if (computedDesc) {
+        return computedDesc;
+      }
+      parentSource = parentSource.parent
+        ? parentSource.parent.source
+        : undefined;
     }
   }
 
@@ -236,10 +251,8 @@ import {
     };
 
     Object.setPrototypeOf(dec, DecoratorDescriptor.prototype);
-
     DECORATOR_COMPUTED_FN.set(dec, fn);
     DECORATOR_PARAMS.set(dec, params);
-
     return dec;
   }
 
@@ -349,6 +362,13 @@ import {
         // Unset the getter and setter so the descriptor just has a plain value
         desc.get = undefined;
         desc.set = undefined;
+      }
+      let superDesc = getInheritedComputedDescriptor(prototype, key);
+      if (superDesc && superDesc instanceof ComputedProperty) {
+        get = wrap(get, superDesc._getter);
+        if (typeof superDesc._setter === 'function') {
+          set = wrap(set, superDesc._setter);
+        }
       }
 
       let setter = set;
