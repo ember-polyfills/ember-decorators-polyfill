@@ -145,6 +145,72 @@ module('@computed', function() {
     get(obj, 'fullName');
   });
 
+  test('it works with classic classes with _super [getter]', function(assert) {
+    assert.expect(1);
+
+    const Foo = EmberObject.extend({
+      first: 'rob',
+      last: 'jackson',
+
+      fullName: computed('first', 'last', function() {
+        return `${this.first} ${this.last}`;
+      }),
+    });
+
+    const Bar = Foo.extend({
+      githubAlias: 'rwjblue',
+      fullName: computed('githubAlias', function() {
+        const fullName = this._super();
+        return `${fullName} [ ${this.githubAlias} ]`;
+      }),
+    });
+
+    let obj = Bar.create();
+    const fullName = get(obj, 'fullName');
+
+    assert.equal(fullName, 'rob jackson [ rwjblue ]');
+  });
+
+  test('it works with classic classes with _super [setter]', function(assert) {
+    assert.expect(2);
+
+    const Foo = EmberObject.extend({
+      firstName: null,
+
+      fullName: computed('firstName', {
+        get() {
+          return `${this.firstName}`;
+        },
+        set(key, value) {
+          let [firstName] = value.split(/\s+/);
+          this.set('firstName', firstName);
+          return value;
+        },
+      }),
+    });
+
+    const Bar = Foo.extend({
+      lastName: null,
+
+      fullName: computed('lastName', {
+        get(key) {
+          return `${this._super(key)} ${this.lastName}`;
+        },
+        set(key, value) {
+          this._super(key, value);
+          let [, lastName] = value.split(/\s+/);
+          this.set('lastName', lastName);
+          return value;
+        },
+      }),
+    });
+
+    let obj = Bar.create();
+    obj.set('fullName', 'rob jackson');
+    assert.equal(obj.get('firstName'), 'rob');
+    assert.equal(obj.get('lastName'), 'jackson');
+  });
+
   test('it works with classic classes with full desc', function(assert) {
     assert.expect(4);
 
