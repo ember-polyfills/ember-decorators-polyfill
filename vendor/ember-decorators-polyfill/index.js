@@ -217,6 +217,10 @@ import {
       this._addModifier(['meta', args]);
       return this;
     }
+
+    get _dependentKeys() {
+      return this._computedDesc ? this._computedDesc._dependentKeys : [];
+    }
   }
 
   DecoratorDescriptor.prototype.isDescriptor = true;
