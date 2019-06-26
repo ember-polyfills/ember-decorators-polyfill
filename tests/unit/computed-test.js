@@ -3,6 +3,8 @@ import { module, test } from 'ember-qunit';
 import EmberObject, { computed, get, set, setProperties } from '@ember/object';
 import { addObserver } from '@ember/object/observers';
 
+import { lte } from 'ember-compatibility-helpers';
+
 module('@computed', function() {
   test('it works', function(assert) {
     assert.expect(2);
@@ -403,6 +405,14 @@ module('@computed', function() {
     new Bar();
     new Baz();
   });
+
+  if (lte('3.10.0-alpha.1')) {
+    test('can access _dependentKeys on return value', function(assert) {
+      let cp = computed('first', 'last', function() {});
+
+      assert.deepEqual(cp._dependentKeys, ['first','last']);
+    });
+  }
 
   if (DEBUG) {
     test('throws if used on non-getters', function(assert) {
