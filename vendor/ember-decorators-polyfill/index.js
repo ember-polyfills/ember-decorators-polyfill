@@ -217,6 +217,12 @@ import {
       this._addModifier(['meta', args]);
       return this;
     }
+
+    get _dependentKeys() {
+      let params = DECORATOR_PARAMS.get(this) || [];
+
+      return params.filter(item => typeof item === 'string');
+    }
   }
 
   DecoratorDescriptor.prototype.isDescriptor = true;
