@@ -6,6 +6,7 @@ import { setupRenderingTest, skip } from 'ember-qunit';
 import { render, click, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
+
 function registerComponent(
   test,
   name,
