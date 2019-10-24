@@ -1,10 +1,15 @@
 'use strict';
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const Funnel = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {
-    // Add options here
+    trees: {
+      tests: new Funnel('tests', {
+        exclude: process.env.EXCLUDE_DATA_TESTS ? ['**/data-test.js'] : null,
+      })
+    }
   });
 
   /*

@@ -52,6 +52,17 @@ module.exports = function() {
           }
         },
         {
+          name: 'ember-no-data',
+          env: {
+            EXCLUDE_DATA_TESTS: true
+          },
+          npm: {
+            devDependencies: {
+              'ember-data': null,
+            }
+          }
+        },
+        {
           name: 'ember-release',
           npm: {
             devDependencies: {
@@ -83,19 +94,6 @@ module.exports = function() {
           name: 'ember-default',
           npm: {
             devDependencies: {}
-          }
-        },
-        {
-          name: 'ember-default-with-jquery',
-          env: {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({
-              'jquery-integration': true
-            })
-          },
-          npm: {
-            devDependencies: {
-              '@ember/jquery': '^0.5.1'
-            }
           }
         }
       ]
