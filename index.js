@@ -9,8 +9,9 @@ module.exports = {
 
     let checker = new VersionChecker(this.project);
     let emberVersion = checker.forEmber();
+    let emberDataVersion = checker.for('ember-data');
 
-    this.shouldPolyfill = emberVersion.lt('3.10.0-alpha.1');
+    this.shouldPolyfill = emberVersion.lt('3.10.0-alpha.0') || emberDataVersion.lt('3.10.0-alpha.0');
   },
 
   included() {

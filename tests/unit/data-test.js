@@ -67,4 +67,44 @@ module('ember-data', function(hooks) {
 
     assert.equal(names, expectedNames, 'The correct records are in the array');
   });
+
+  test('@attr can be used without parens', async function(assert) {
+    let Post = class extends DS.Model {
+      @DS.attr name;
+    };
+
+    register(`model:post`, Post);
+    stubAdapter();
+
+    let store = getService('store');
+    let posts = await store.peekAll('post');
+    let names = posts
+      .toArray()
+      .map(post => get(post, 'name'))
+      .join();
+
+    assert.equal(names, expectedNames, 'The correct records are in the array');
+  });
+
+  if (gte('ember-data', '3.11.0')) {
+    test('@attr works with module imports without parens', async function(assert) {
+      let { default: Model, attr } = window.require('@ember-data/model');
+
+      let Post = class extends Model {
+        @attr name;
+      };
+
+      register(`model:post`, Post);
+      stubAdapter();
+
+      let store = getService('store');
+      let posts = await store.peekAll('post');
+      let names = posts
+        .toArray()
+        .map(post => get(post, 'name'))
+        .join();
+
+      assert.equal(names, expectedNames, 'The correct records are in the array');
+    });
+  }
 });
