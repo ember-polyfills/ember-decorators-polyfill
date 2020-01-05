@@ -372,7 +372,7 @@ import {
       let superDesc = getInheritedComputedDescriptor(prototype, key);
       if (superDesc && superDesc instanceof ComputedProperty) {
         get = wrap(get, superDesc._getter);
-        if (typeof superDesc._setter === 'function') {
+        if (set !== undefined && typeof superDesc._setter === 'function') {
           set = wrap(set, superDesc._setter);
         }
       }
