@@ -292,6 +292,35 @@ module('@computed', function() {
     );
   });
 
+  test('it works with classic classes with getter-only desc extending desc with setter', function(assert) {
+    assert.expect(1);
+
+    const Foo = EmberObject.extend({
+      fullName: computed('firstName', {
+        get() {
+          assert.ok(false, 'Overriden CP getter must not be called.');
+        },
+        set(key, value) {
+          return value;
+        },
+      }),
+    });
+
+    const Bar = Foo.extend({
+      first: 'rob',
+      last: 'jackson',
+
+      fullName: computed('lastName', {
+        get() {
+          return `${this.first} ${this.last}`;
+        },
+      }),
+    });
+
+    let obj = Bar.create();
+    assert.equal(obj.get('fullName'), 'rob jackson');
+  });
+
   test('dependent key changes invalidate the computed property', function(assert) {
     class Foo {
       first = 'rob';
