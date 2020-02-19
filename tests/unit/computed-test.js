@@ -3,6 +3,7 @@ import { module, test } from 'ember-qunit';
 import EmberObject, { computed, get, set, setProperties } from '@ember/object';
 import { addObserver } from '@ember/object/observers';
 
+import classic from 'ember-classic-decorator';
 import { lte } from 'ember-compatibility-helpers';
 
 module('@computed', function() {
@@ -482,6 +483,7 @@ module('@computed', function() {
   module('modifiers', function() {
     test('volatile', function(assert) {
       assert.expect(2);
+      @classic
       class Foo extends EmberObject {
         _count = 0;
 
