@@ -30,6 +30,7 @@
     "babel-eslint": "^10.0.1",
     "broccoli-asset-rev": "^2.7.0",
     "broccoli-funnel": "^2.0.2",
+    "ember-classic-decorator": "^1.0.6",
     "ember-cli": "~3.8.1",
     "ember-cli-dependency-checker": "^3.1.0",
     "ember-cli-eslint": "^4.2.3",
@@ -59,6 +60,9 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "after": "ember-source"
+    "after": [
+      "ember-source",
+      "ember-classic-decorator"
+    ]
   }
 }

@@ -4,6 +4,7 @@ import Component from '@ember/component';
 import { module, test } from 'qunit';
 import { setupRenderingTest, skip } from 'ember-qunit';
 import { render, click, findAll } from '@ember/test-helpers';
+import classic from 'ember-classic-decorator';
 import hbs from 'htmlbars-inline-precompile';
 
 
@@ -27,6 +28,7 @@ module('action-decorator', function(hooks) {
   setupRenderingTest(hooks);
 
   test('action decorator works with ES6 class', async function(assert) {
+    @classic
     class FooComponent extends Component {
       @action
       foo() {
@@ -36,7 +38,7 @@ module('action-decorator', function(hooks) {
 
     registerComponent(this, 'foo-bar', {
       ComponentClass: FooComponent,
-      template: hbs`<button {{action 'foo'}}>Click Me!</button>`,
+      template: hbs`<button {{action "foo"}}>Click Me!</button>`,
     });
 
     await render(hbs`{{foo-bar}}`);
@@ -45,6 +47,7 @@ module('action-decorator', function(hooks) {
   });
 
   test('action decorator does not add actions to superclass', async function(assert) {
+    @classic
     class Foo extends EmberObject {
       @action
       foo() {
@@ -52,6 +55,7 @@ module('action-decorator', function(hooks) {
       }
     }
 
+    @classic
     class Bar extends Foo {
       @action
       bar() {
@@ -84,6 +88,7 @@ module('action-decorator', function(hooks) {
       },
     });
 
+    @classic
     class BarComponent extends FooComponent {
       @action
       bar() {
@@ -99,6 +104,7 @@ module('action-decorator', function(hooks) {
       },
     });
 
+    @classic
     class QuxComponent extends BazComponent {
       @action
       qux() {
@@ -109,10 +115,10 @@ module('action-decorator', function(hooks) {
     registerComponent(this, 'qux-component', {
       ComponentClass: QuxComponent,
       template: hbs`
-        <button {{action 'foo'}}>Click Foo!</button>
-        <button {{action 'bar'}}>Click Bar!</button>
-        <button {{action 'baz'}}>Click Baz!</button>
-        <button {{action 'qux'}}>Click Qux!</button>
+        <button {{action "foo"}}>Click Foo!</button>
+        <button {{action "bar"}}>Click Bar!</button>
+        <button {{action "baz"}}>Click Baz!</button>
+        <button {{action "qux"}}>Click Qux!</button>
       `,
     });
 
@@ -126,12 +132,14 @@ module('action-decorator', function(hooks) {
   });
 
   test('action decorator super works with native class methods', async function(assert) {
+    @classic
     class FooComponent extends Component {
       foo() {
         assert.ok(true, 'called!');
       }
     }
 
+    @classic
     class BarComponent extends FooComponent {
       @action
       foo() {
@@ -141,7 +149,7 @@ module('action-decorator', function(hooks) {
 
     registerComponent(this, 'bar-bar', {
       ComponentClass: BarComponent,
-      template: hbs`<button {{action 'foo'}}>Click Me!</button>`,
+      template: hbs`<button {{action "foo"}}>Click Me!</button>`,
     });
 
     await render(hbs`{{bar-bar}}`);
@@ -156,6 +164,7 @@ module('action-decorator', function(hooks) {
       },
     });
 
+    @classic
     class BarComponent extends FooComponent {
       @action
       foo() {
@@ -165,7 +174,7 @@ module('action-decorator', function(hooks) {
 
     registerComponent(this, 'bar-bar', {
       ComponentClass: BarComponent,
-      template: hbs`<button {{action 'foo'}}>Click Me!</button>`,
+      template: hbs`<button {{action "foo"}}>Click Me!</button>`,
     });
 
     await render(hbs`{{bar-bar}}`);
@@ -175,6 +184,7 @@ module('action-decorator', function(hooks) {
 
   // This test fails with _classes_ compiled in loose mode
   skip('action decorator works with parent native class actions', async function(assert) {
+    @classic
     class FooComponent extends Component {
       @action
       foo() {
@@ -182,6 +192,7 @@ module('action-decorator', function(hooks) {
       }
     }
 
+    @classic
     class BarComponent extends FooComponent {
       @action
       foo() {
@@ -191,7 +202,7 @@ module('action-decorator', function(hooks) {
 
     registerComponent(this, 'bar-bar', {
       ComponentClass: BarComponent,
-      template: hbs`<button {{action 'foo'}}>Click Me!</button>`,
+      template: hbs`<button {{action "foo"}}>Click Me!</button>`,
     });
 
     await render(hbs`{{bar-bar}}`);
@@ -200,6 +211,7 @@ module('action-decorator', function(hooks) {
   });
 
   test('action decorator binds functions', async function(assert) {
+    @classic
     class FooComponent extends Component {
       bar = 'some value';
 
@@ -221,6 +233,7 @@ module('action-decorator', function(hooks) {
 
   // This test fails with _classes_ compiled in loose mode
   skip('action decorator super works correctly when bound', async function(assert) {
+    @classic
     class FooComponent extends Component {
       bar = 'some value';
 
@@ -230,6 +243,7 @@ module('action-decorator', function(hooks) {
       }
     }
 
+    @classic
     class BarComponent extends FooComponent {
       @action
       foo() {
@@ -249,6 +263,7 @@ module('action-decorator', function(hooks) {
 
   test('action decorator throws an error if applied to non-methods', async function(assert) {
     assert.throws(() => {
+      @classic
       class TestObject extends EmberObject {
         @action foo = 'bar';
       }
@@ -259,6 +274,7 @@ module('action-decorator', function(hooks) {
 
   test('action decorator throws an error if passed a function in native classes', async function(assert) {
     assert.throws(() => {
+      @classic
       class TestObject extends EmberObject {
         @action(function() {}) foo = 'bar';
       }
@@ -276,7 +292,7 @@ module('action-decorator', function(hooks) {
 
     registerComponent(this, 'foo-bar', {
       ComponentClass: FooComponent,
-      template: hbs`<button {{action 'foo'}}>Click Me!</button>`,
+      template: hbs`<button {{action "foo"}}>Click Me!</button>`,
     });
 
     await render(hbs`{{foo-bar}}`);

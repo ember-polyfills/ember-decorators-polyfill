@@ -3,6 +3,7 @@ import Controller from '@ember/controller';
 import { setupTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 
+import classic from 'ember-classic-decorator';
 import { inject as controller } from '@ember/controller';
 import { inject as service } from '@ember/service';
 
@@ -93,6 +94,7 @@ module('@service', function(hooks) {
 
     this.owner.register('service:foo', FooService);
 
+    @classic
     class Baz extends EmberObject {
       @service foo;
     }
@@ -112,6 +114,7 @@ module('@service', function(hooks) {
 
     this.owner.register('service:foo', FooService);
 
+    @classic
     class Baz extends EmberObject {
       @service('foo') bar;
     }
@@ -133,6 +136,7 @@ module('@service', function(hooks) {
 
     this.owner.register('service:foo', FooService);
 
+    @classic
     class Baz extends EmberObject {
       @service foo;
     }

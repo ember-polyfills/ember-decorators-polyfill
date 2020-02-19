@@ -33,6 +33,13 @@
       return mainRequire(moduleName);
     }
 
+    if (window.require !== patchDataDecorators) {
+      // Something else patched, most likely ember-classic-decorator
+      // and since we're about to do things we shouldn't, get the original
+      // require back
+      mainRequire = window.require;
+    }
+
     let {
       attr: dataAttr,
       belongsTo: dataBelongsTo,
