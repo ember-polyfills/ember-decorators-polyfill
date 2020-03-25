@@ -15,8 +15,6 @@
     );
   }
 
-  let mainRequire = require;
-
   function computedMacroWithOptionalParams(fn) {
     return (...maybeDesc) =>
       (isFieldDescriptor(maybeDesc)
@@ -28,16 +26,9 @@
     let DS;
 
     try {
-      DS = mainRequire('ember-data').default;
+      DS = window.requirejs('ember-data').default;
     } catch (e) {
-      return mainRequire(moduleName);
-    }
-
-    if (window.require !== patchDataDecorators) {
-      // Something else patched, most likely ember-classic-decorator
-      // and since we're about to do things we shouldn't, get the original
-      // require back
-      mainRequire = window.require;
+      return window.requirejs(moduleName);
     }
 
     let {
@@ -54,19 +45,19 @@
     DS.belongsTo = belongsTo;
     DS.hasMany = hasMany;
 
-    if (mainRequire.entries['@ember-data/model/index']) {
+    if (window.requirejs.entries['@ember-data/model/index']) {
       let newExports = Object.assign(
         {},
-        mainRequire.entries['@ember-data/model/index'].module.exports,
+        window.requirejs.entries['@ember-data/model/index'].module.exports,
         { attr, belongsTo, hasMany }
       );
 
-      mainRequire.entries['@ember-data/model/index'].module.exports = newExports;
+      window.requirejs.entries['@ember-data/model/index'].module.exports = newExports;
     }
 
-    window.require = require = mainRequire;
+    window.require = require = window.requirejs;
 
-    return mainRequire(moduleName);
+    return window.requirejs(moduleName);
   }
 })();
 

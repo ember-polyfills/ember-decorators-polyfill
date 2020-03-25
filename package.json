@@ -61,8 +61,7 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "after": [
-      "ember-source",
-      "ember-classic-decorator"
+      "ember-source"
     ]
   }
 }
