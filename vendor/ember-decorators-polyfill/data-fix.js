@@ -22,13 +22,14 @@
         : Function.apply.call(fn, undefined, maybeDesc))
   }
 
+  let originalRequire = window.require;
   window.require = require = function patchDataDecorators(moduleName) {
     let DS;
 
     try {
-      DS = window.requirejs('ember-data').default;
+      DS = originalRequire('ember-data').default;
     } catch (e) {
-      return window.requirejs(moduleName);
+      return originalRequire(moduleName);
     }
 
     let {
